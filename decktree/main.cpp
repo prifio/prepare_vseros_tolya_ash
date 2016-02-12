@@ -7,17 +7,19 @@ struct note
     note *le, *r;
     int y, sz;
     int data;
+    int sum = 0;
     note(int a)
     {
         y = rand();
         sz = 1;
         le = r = NULL;
-        data = a;
+        data = sum = a;
     }
 
     void recalc()
     {
-        sz = 1 + ((le == NULL) ? 0 : le -> sz) + ((le == NULL) ? 0 : r -> sz);
+        sz = 1 + ((le == NULL) ? 0 : le -> sz) + ((r == NULL) ? 0 : r -> sz);
+        sum = data + ((le == NULL) ? 0 : le -> sum) + ((r == NULL) ? 0 : r -> sum);
     }
 };
 
@@ -55,6 +57,7 @@ pair<note*, note*> splite(note* a, int k)
     auto hlp = splite(a -> r, k - 1 - ((a -> le == NULL) ? 0 : a -> le -> sz));
     note* left = a;
     left -> r = hlp.first;
+    left -> recalc();
     return make_pair(left, hlp.second);
 }
 
@@ -62,6 +65,12 @@ pair<note*, note*> splite(note* a, int k)
 
 int main()
 {
+    note* mass = NULL;
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
 
+    }
     return 0;
 }
