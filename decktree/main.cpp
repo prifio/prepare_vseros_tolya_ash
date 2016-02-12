@@ -42,8 +42,8 @@ note* merge_note(note* a, note* b)
 
 pair<note*, note*> splite(note* a, int k)
 {
-    if (note* a == NULL)
-        return make_pair(NULL, NULL);
+    if (a == NULL)
+        return make_pair((note*)NULL, (note*)NULL);
     if (a -> le != NULL && a -> le -> sz >= k)
     {
         auto hlp = splite(a -> le, k);
@@ -52,10 +52,10 @@ pair<note*, note*> splite(note* a, int k)
         right -> recalc();
         return make_pair(hlp.first, right);
     }
-    auto hlp = splite(a -> r, k - 1 - a -> le -> sz);
-    note* right = a;
-    right -> le = hlp.second;
-    return make_pair(hlp.first, right);
+    auto hlp = splite(a -> r, k - 1 - ((a -> le == NULL) ? 0 : a -> le -> sz));
+    note* left = a;
+    left -> r = hlp.first;
+    return make_pair(left, hlp.second);
 }
 
 
