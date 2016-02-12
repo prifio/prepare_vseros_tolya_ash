@@ -4,7 +4,7 @@ using namespace std;
 
 struct note
 {
-    note* le, r;
+    note *le, *r;
     int y, sz;
     int data;
     note(int a)
@@ -17,7 +17,7 @@ struct note
 
     void recalc()
     {
-        sz = 1 + (le == NULL : 0 ? le -> sz) + (le == NULL : 0 ? r -> sz);
+        sz = 1 + ((le == NULL) ? 0 : le -> sz) + ((le == NULL) ? 0 : r -> sz);
     }
 };
 
@@ -38,6 +38,24 @@ note* merge_note(note* a, note* b)
     ans -> le = merge_note(a, b -> le);
     ans -> recalc();
     return ans;
+}
+
+pair<note*, note*> splite(note* a, int k)
+{
+    if (note* a == NULL)
+        return make_pair(NULL, NULL);
+    if (a -> le != NULL && a -> le -> sz >= k)
+    {
+        auto hlp = splite(a -> le, k);
+        note* right = a;
+        right -> le = hlp.second;
+        right -> recalc();
+        return make_pair(hlp.first, right);
+    }
+    auto hlp = splite(a -> r, k - 1 - a -> le -> sz);
+    note* right = a;
+    right -> le = hlp.second;
+    return make_pair(hlp.first, right);
 }
 
 
