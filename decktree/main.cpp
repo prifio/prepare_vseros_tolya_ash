@@ -8,7 +8,6 @@ struct note
     int y, sz;
     int data;
     int sum = 0;
-
     void recalc()
     {
         sz = 1 + ((le == NULL) ? 0 : le -> sz) + ((r == NULL) ? 0 : r -> sz);
@@ -64,6 +63,33 @@ pair<note*, note*> splite(note* a, int k)
     return make_pair(left, hlp.second);
 }
 
+note* get_key(note* a, int ind)
+{
+    int szleft = (a -> le == NULL) ? 0 : a -> le -> sz;
+    if (szleft == ind)
+        return a;
+    if (szleft >= ind)
+        return get_key(a -> le, ind);
+    return get_key(a -> r, ind - szleft - 1);
+}
+
+void up_key(note* a, int ind, int up)
+{
+    int szleft = (a -> le == NULL) ? 0 : a -> le -> sz;
+    if (szleft == ind)
+        a -> data += up;
+    if (szleft > ind)
+        up_key(a -> le, ind, up);
+    else if (szleft < ind)
+        up_key(a -> r, ind - szleft - 1, up);
+    a -> recalc();
+}
+
+void change_key(note* a, int ind, int dat)
+{
+    up_key(a, ind, -get_key(a, ind) -> data + dat);
+}
+
 
 
 int main()
@@ -79,6 +105,7 @@ int main()
         vrtx[i] = get_note(a);
         mass = merge_note(mass, &vrtx[i]);
     }
-    cout << splite(mass, 2).first -> sum;
+    change_key(mass, 2, 10);
+    cout << splite(mass, 3).first -> sum << " " << get_key(mass, 2) -> data;
     return 0;
 }
