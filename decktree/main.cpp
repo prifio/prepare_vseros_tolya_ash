@@ -8,13 +8,6 @@ struct note
     int y, sz;
     int data;
     int sum = 0;
-    note(int a)
-    {
-        y = rand();
-        sz = 1;
-        le = r = NULL;
-        data = sum = a;
-    }
 
     void recalc()
     {
@@ -22,6 +15,16 @@ struct note
         sum = data + ((le == NULL) ? 0 : le -> sum) + ((r == NULL) ? 0 : r -> sum);
     }
 };
+
+note get_note(int a)
+{
+    note ans;
+    ans.y = rand();
+    ans.sz = 1;
+    ans.le = ans.r = NULL;
+    ans.data = ans.sum = a;
+    return ans;
+}
 
 note* merge_note(note* a, note* b)
 {
@@ -46,7 +49,7 @@ pair<note*, note*> splite(note* a, int k)
 {
     if (a == NULL)
         return make_pair((note*)NULL, (note*)NULL);
-    if (a -> le != NULL && a -> le -> sz >= k)
+    if ((k == 0) || (a -> le != NULL && a -> le -> sz >= k))
     {
         auto hlp = splite(a -> le, k);
         note* right = a;
@@ -68,9 +71,14 @@ int main()
     note* mass = NULL;
     int n;
     scanf("%d", &n);
+    note vrtx[n];
     for (int i = 0; i < n; ++i)
     {
-
+        int a;
+        scanf("%d", &a);
+        vrtx[i] = get_note(a);
+        mass = merge_note(mass, &vrtx[i]);
     }
+    cout << splite(mass, 2).first -> sum;
     return 0;
 }
