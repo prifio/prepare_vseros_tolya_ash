@@ -90,8 +90,6 @@ void change_key(note* a, int ind, int dat)
     up_key(a, ind, -get_key(a, ind) -> data + dat);
 }
 
-
-
 int main()
 {
     note* mass = NULL;
