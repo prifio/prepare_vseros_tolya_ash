@@ -2,8 +2,6 @@
 
 using namespace std;
 
-const int MOD = 1e9 + 7;
-
 int main()
 {
     string s;
@@ -20,10 +18,10 @@ int main()
     int yk = 0;
     for (int i = 0; i < n; ++i)
     {
-        ans = (ans + n + 1 - i) % MOD;
+        ans += n + 1 - i;
         while (yk < i || bal[yk] > 0)
             ++yk;
-        ans = (ans + yk - i) % MOD;
+        ans += yk - i;
     }
     cout << ans;
     return 0;
