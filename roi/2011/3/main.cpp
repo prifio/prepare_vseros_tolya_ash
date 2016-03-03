@@ -57,6 +57,45 @@ cikle get_cikle(string s)
     ans.sdv = sdv;
     return ans;
 }
+
+int KTO(bool &b, int m1, int a1, int m2, int a2)
+{
+    if (m1 < m2)
+        swap(m1, m2), swap(a1, a2);
+    int n1 = m1, n2 = m2;
+    while (n1 % n2 > 0)
+    {
+        n1 %= n2;
+        swap(n1, n2);
+    }
+    if (a1 % n2 != a2 % n2)
+    {
+        b = false;
+        return -1;
+    }
+    b = true;
+    vector<int> v;
+    m1 = n1 = m1 / n2;
+    m2 = n2 = m2 / n2;
+    while (n1 % n2 > 0)
+    {
+        v.push_back(n1 / n2);
+        n1 %= n2;
+        swap(n1, n2);
+    }
+    int k1 = 0, k2 = 1;
+    for (int i = v.size() - 1; i >= 0; --i)
+    {
+        int h = k2;
+        k2 = k1 - k2 * v[i];
+        k1 = h;
+        cout << k1 << k2 << "z\n";
+    }
+    int h10 = ((m1 * m2 + k2 * m2) % (m1 * m2) + m1 * m2) % (m1 * m2);
+    int h01 = ((k1 * m1) % (m1 * m2) + m1 * m2) % (m1 * m2);
+    return a1 * h10 % (m1 * m2) + h01 * a2 % (m1 * m2);
+}
+
 /*
 DCADCAD
 BABBABB
@@ -89,6 +128,11 @@ int main()
         for (int i = len; i < h; ++i)
             if (info[i].has != info[i - len].has || info[i].len != info[i - len].len || sdv[i % len] != (info[i].sdv + info[i].len - info[i - len].sdv) % info[i].len)
                 b = false;
+        if (len)
+        {
+
+            for (int i = 0; i )
+        }
         ++len;
     }
     --len;
